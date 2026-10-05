@@ -1,0 +1,31 @@
+#ifndef CTUI_H
+#define CTUI_H
+
+#include <iostream>
+#include <string>
+#include <functional>
+#include <vector>
+#include <limits>
+
+using namespace std;
+
+
+class TUIMenu {
+    private:
+
+    string title;
+    vector<pair<string, function<void()>>> options;
+
+    void clear();
+    void err();
+    void enter();
+    void show();
+    public:
+    
+    TUIMenu(const string& title, vector<pair<string, function<void()>>> ops);
+    TUIMenu(vector<pair<string, function<void()>>> ops);
+    
+    void Run();
+};
+
+#endif

@@ -7,14 +7,12 @@
 #include <vector>
 #include <limits>
 
-using namespace std;
-
 
 class TUIMenu {
     private:
 
-    string title;
-    vector<pair<string, function<void()>>> options;
+    std::string title;
+    std::vector<std::pair<std::string, std::function<void()>>> options;
 
     void clear();
     void err();
@@ -22,10 +20,11 @@ class TUIMenu {
     void show();
     public:
     
-    TUIMenu(const string& title, vector<pair<string, function<void()>>> ops);
-    TUIMenu(vector<pair<string, function<void()>>> ops);
+    TUIMenu(const std::string& title, std::vector<std::pair<std::string, std::function<void()>>> ops);
+    TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops);
     
     void Run();
+    int RunWithInt();
 };
 
 #endif

@@ -13,6 +13,7 @@ class TUIMenu {
 
     std::string title;
     std::vector<std::pair<std::string, std::function<void()>>> options;
+    bool is_selector;
 
     void clear();
     void err();
@@ -20,11 +21,11 @@ class TUIMenu {
     void show();
     public:
     
-    TUIMenu(const std::string& title, std::vector<std::pair<std::string, std::function<void()>>> ops);
-    TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops);
+    TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops, const std::string& title = "");
+    TUIMenu(const std::vector<std::string>& ops, const std::string& title = "");
+
     
-    void Run();
-    int RunWithInt();
+    int Run();
 };
 
 #endif

@@ -27,25 +27,31 @@ void TUIMenu::show() {
     std::cout << "0. Выход\nВаш выбор: ";
 }
 
-TUIMenu::TUIMenu(const std::string& title, std::vector<std::pair<std::string, std::function<void()>>> ops)
-    : title(title), options(ops) {}
+TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops, const std::string& title = "")
+    : title(title), options(ops), is_selector(0) {}
 
-TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops)
-    : title(""), options(ops) {}
+TUIMenu::TUIMenu(const std::vector<std::string>& string_options, const std::string& title = "")
+    : title(title), is_selector(1)
+{
+    for (const auto& str : string_options) {
+        options.push_back({str, [](){}}); 
+    }
+}
 
-void TUIMenu::Run() {
+int TUIMenu::Run() {
     
     int choose = 0;
-    
     while (true) {
         show();
         if (!(std::cin >> choose) || choose < 0 || choose > int(options.size())) {
             err();
             continue;
-        } else if (choose == 0) {return;}
+        } else if (choose == 0) {break;}
         clear();
 
         options[choose-1].second();
         enter();
+        if (is_selector) {break;}
     }
+    return choose;
 }

@@ -1,4 +1,4 @@
-#include "ctui"
+#include "ctui.h"
 
 void TUIMenu::clear() {
     std::cout << "\033[2J\033[1;1H";
@@ -17,7 +17,7 @@ void TUIMenu::err() {
     enter();
 }
 
-void TUIMenu::show() {
+void TUIMenu::show(const std::string& title) {
     if (title != "") {std::cout << "=== " << title << " ===" << std::endl;}
 
     for (int i = 0; i < int(options.size()); i++) {
@@ -27,22 +27,42 @@ void TUIMenu::show() {
     std::cout << "0. Выход\nВаш выбор: ";
 }
 
-TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops, const std::string& title = "")
-    : title(title), options(ops), is_selector(0) {}
+TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops)
+    : options(ops), is_selector(0) {}
 
-TUIMenu::TUIMenu(const std::vector<std::string>& string_options, const std::string& title = "")
-    : title(title), is_selector(1)
+TUIMenu::TUIMenu(const std::vector<std::string>& string_options)
+    : is_selector(1)
 {
     for (const auto& str : string_options) {
         options.push_back({str, [](){}}); 
     }
 }
 
-int TUIMenu::Run() {
-    
-    int choose = 0;
+int TUIMenu::getInt(const std::string& prompt, int min, int max) {
+    int value;
     while (true) {
-        show();
+        std::cout << prompt << " (" << min << "-" << max << "): ";
+        if (!(std::cin >> value) || value < min || value > max) {
+            err();
+            continue;
+        }
+        break;
+    }
+    enter();
+    return value;
+}
+
+std::string getString(const std::string& prompt) {
+    std::string value;
+    std::cout << prompt;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+    std::getline(std::cin, value);
+    return value;
+}
+
+int TUIMenu::Run(const std::string& title) {
+    while (true) {
+        show(title);
         if (!(std::cin >> choose) || choose < 0 || choose > int(options.size())) {
             err();
             continue;
@@ -54,4 +74,17 @@ int TUIMenu::Run() {
         if (is_selector) {break;}
     }
     return choose;
+}
+
+int TUIMenu::getChoose() const {
+    return choose;
+}
+
+TUIMenu& TUIMenu::operator=(const TUIMenu& other) {
+    if (this != &other) {
+        options = other.options;
+        is_selector = other.is_selector;
+        choose = other.choose;
+    }
+    return *this;
 }

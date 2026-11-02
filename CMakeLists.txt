@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 1. Создаем статическую библиотеку. 
 # Обязательно указываем файл заголовка, чтобы он отображался в IDE.
-add_library(ctui STATIC src/ctui.cpp include/ctui)
+add_library(ctui STATIC src/ctui.cpp include/ctui.h)
 
 # 2. ГЛАВНЫЙ ТРЮК: Говорим CMake, что файл без расширения — это заголовок, 
 # и его НЕ НУЖНО пытаться компилировать как .cpp файл.

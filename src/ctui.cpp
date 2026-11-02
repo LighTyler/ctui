@@ -17,8 +17,9 @@ void TUIMenu::err() {
     enter();
 }
 
-void TUIMenu::show(const std::string& title) {
-    if (title != "") {std::cout << "=== " << title << " ===" << std::endl;}
+void TUIMenu::show(const std::string& ctx_title) {
+    if (ctx_title != "") {std::cout << "=== " << ctx_title << " ===" << std::endl;}
+    else if (title != "") {std::cout << "=== " << title << " ===" << std::endl;}
 
     for (int i = 0; i < int(options.size()); i++) {
         std::cout << i+1 << ". " << options[i].first << std::endl;
@@ -27,11 +28,11 @@ void TUIMenu::show(const std::string& title) {
     std::cout << "0. Выход\nВаш выбор: ";
 }
 
-TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops)
-    : options(ops), is_selector(0) {}
+TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops, const std::string& title)
+    : title(title), options(ops), is_selector(0) {}
 
-TUIMenu::TUIMenu(const std::vector<std::string>& string_options)
-    : is_selector(1)
+TUIMenu::TUIMenu(const std::vector<std::string>& string_options, const std::string& title)
+    : title(title), is_selector(1)
 {
     for (const auto& str : string_options) {
         options.push_back({str, [](){}}); 
@@ -60,9 +61,9 @@ std::string getString(const std::string& prompt) {
     return value;
 }
 
-int TUIMenu::Run(const std::string& title) {
+int TUIMenu::Run(const std::string& ctx_title) {
     while (true) {
-        show(title);
+        show(ctx_title);
         if (!(std::cin >> choose) || choose < 0 || choose > int(options.size())) {
             err();
             continue;
@@ -82,9 +83,17 @@ int TUIMenu::getChoose() const {
 
 TUIMenu& TUIMenu::operator=(const TUIMenu& other) {
     if (this != &other) {
+        title = other.title;
         options = other.options;
         is_selector = other.is_selector;
         choose = other.choose;
+    }
+    return *this;
+}
+
+TUIMenu& TUIMenu::operator=(const std::string& new_title) {
+    if (this->title != new_title) {
+        this->title = new_title;
     }
     return *this;
 }

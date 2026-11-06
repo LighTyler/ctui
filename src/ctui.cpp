@@ -25,7 +25,7 @@ void TUIMenu::show(const std::string& ctx_title) {
         std::cout << i+1 << ". " << options[i].first << std::endl;
     }
 
-    std::cout << "0. Выход\nВаш выбор: ";
+    if (!is_selector) { std::cout << "0. Выход\nВаш выбор: "; }
 }
 
 TUIMenu::TUIMenu(std::vector<std::pair<std::string, std::function<void()>>> ops, const std::string& title)
@@ -67,12 +67,19 @@ int TUIMenu::Run(const std::string& ctx_title) {
         if (!(std::cin >> choose) || choose < 0 || choose > int(options.size())) {
             err();
             continue;
-        } else if (choose == 0) {break;}
-        clear();
+        } else if (is_selector && choose == 0) { 
+            err();
+            continue;
+        } else if (!is_selector && choose == 0) {break;}
 
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        clear();
+        
         options[choose-1].second();
-        enter();
-        if (is_selector) {break;}
+
+        if (is_selector) {break;} else {
+            enter();
+        }
     }
     return choose;
 }

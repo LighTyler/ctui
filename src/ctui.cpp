@@ -49,7 +49,6 @@ int TUIMenu::getInt(const std::string& prompt, int min, int max) {
         }
         break;
     }
-    enter();
     return value;
 }
 

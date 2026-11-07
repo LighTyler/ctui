@@ -32,6 +32,8 @@ class TUIMenu {
 
     TUIMenu& operator=(const TUIMenu& other);
     TUIMenu& operator=(const std::string& new_title);
+    TUIMenu& operator+(const std::vector<std::pair<std::string, std::function<void()>>> ops);
+    TUIMenu& operator+(const std::vector<std::string>& ops);
 };
 
 #endif

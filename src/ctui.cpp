@@ -104,3 +104,17 @@ TUIMenu& TUIMenu::operator=(const std::string& new_title) {
     }
     return *this;
 }
+
+TUIMenu& TUIMenu::operator+(const std::vector<std::pair<std::string, std::function<void()>>> ops) {
+    for (const auto& op : ops) {
+        options.push_back(op);
+    }
+    return *this;
+}
+
+TUIMenu& TUIMenu::operator+(const std::vector<std::string>& opts) {
+    for (const auto& opt : opts) {
+        options.push_back({opt, [](){}});
+    }
+    return *this;
+}

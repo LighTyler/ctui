@@ -53,7 +53,7 @@ int TUIMenu::getInt(const std::string& prompt, int min, int max) {
     return value;
 }
 
-std::string getString(const std::string& prompt) {
+std::string TUIMenu::getString(const std::string& prompt) {
     std::string value;
     std::cout << prompt;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
